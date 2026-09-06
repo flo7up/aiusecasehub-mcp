@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "properties": {
+    "apiKey": {
+      "type": "string",
+      "minLength": 1,
+      "title": "AIUseCaseHub API Key",
+      "description": "Optional. Leave unset for the free limited preview. Personal keys unlock full results: search costs 2 credits; details cost 1. https://www.aiusecasehub.com/developer-api",
+      "x-from": { "header": "x-api-key" }
+    }
+  }
+}

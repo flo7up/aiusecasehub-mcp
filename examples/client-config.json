@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "aiusecasehub": {
+      "url": "https://basic-backend713-dsd8hygyfkc8d8f5.swedencentral-01.azurewebsites.net/api/mcp",
+      "headers": {
+        "X-API-Key": "<YOUR_PERSONAL_API_KEY>"
+      }
+    }
+  }
+}

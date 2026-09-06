@@ -1,0 +1,28 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.flo7up/aiusecasehub",
+  "title": "AIUseCaseHub",
+  "description": "Source-linked enterprise AI deployment search. Free preview; API keys unlock full results.",
+  "version": "1.1.0",
+  "websiteUrl": "https://www.aiusecasehub.com/developer-mcp",
+  "icons": [
+    {
+      "src": "https://www.aiusecasehub.com/logo.png",
+      "mimeType": "image/png"
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://basic-backend713-dsd8hygyfkc8d8f5.swedencentral-01.azurewebsites.net/api/mcp",
+      "headers": [
+        {
+          "name": "X-API-Key",
+          "description": "Optional key for full results. Omit for free preview. https://www.aiusecasehub.com/developer-api",
+          "isRequired": false,
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}
