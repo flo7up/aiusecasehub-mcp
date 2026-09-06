@@ -100,7 +100,21 @@ The script verifies all four tool names and stops on HTTP, protocol or tool erro
 
 ## Registry metadata
 
-The official MCP Registry name is **`io.github.flo7up/aiusecasehub`**, version **`1.1.0`**. `server.json` declares an optional secret header without embedding a credential.
+[Glama also lists the hosted connector](https://glama.ai/mcp/connectors/io.github.flo7up/aiusecasehub), with a Healthy status and all four tools verified on September 6, 2026.
+
+The service is also [listed on Smithery](https://smithery.ai/servers/flo7up/aiusecasehub). Its optional configuration collects each user's personal AIUseCaseHub key; leave it unset for the preview. A public-preview search and detail lookup through Smithery's connection API were verified on September 6, 2026.
+
+Smithery CLI 1.2.0 currently defaults to a gateway address that returned 404 during verification. If affected, use Smithery's documented API base for connections in the current PowerShell session:
+
+```powershell
+$env:SMITHERY_CONNECT_BASE_URL = 'https://api.smithery.ai/connect'
+smithery mcp add flo7up/aiusecasehub --id aiusecasehub
+smithery tool list aiusecasehub
+```
+
+Smithery requires its own sign-in for gateway connections. Connecting directly to the hosted endpoint above requires no account for the preview.
+
+The official MCP Registry name is **`io.github.flo7up/aiusecasehub`**, version **`1.1.1`**. `server.json` declares an optional secret header without embedding a credential.
 
 `smithery-config.json` declares the optional personal API-key header for Smithery's configuration UI. Free previews use no key; full-access users supply their own. Publication and working connections are verified separately.
 
