@@ -4,7 +4,7 @@ Search source-linked enterprise AI deployments from your agent. Find examples by
 
 [Website](https://www.aiusecasehub.com) · [MCP documentation](https://www.aiusecasehub.com/developer-mcp) · [Get an API key](https://www.aiusecasehub.com/developer-api) · [Official registry record](https://registry.modelcontextprotocol.io/v0.1/servers/io.github.flo7up%2Faiusecasehub/versions/latest)
 
-This repository contains the hosted service's integration examples and registry metadata. Connect to the existing endpoint; no server installation, hosting account or npm package is required.
+This repository contains an optional runnable stdio adapter, integration examples and registry metadata for the hosted service. Connecting directly to the existing endpoint requires no server installation, hosting account or npm package.
 
 ## Connect
 
@@ -46,6 +46,45 @@ Optional full-access configuration:
 Use your client's secret storage or environment-variable support for personal keys. Omit the entire authentication header for a free preview; an empty or invalid key remains an authentication error. Configuration formats vary by client.
 
 The service supports the [July 2026 stateless protocol](https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/streamable-http) and the older initialization handshake over Streamable HTTP (`2024-11-05`, `2025-03-26`, `2025-06-18`, `2025-11-25`). Current clients send request metadata on each POST; older clients negotiate through `initialize`. The direct endpoint offers an anonymous preview and optional personal API-key authentication.
+
+## Run the stdio adapter
+
+For clients and directory scanners that require a local process, this repository provides a stdio adapter using [mcp-remote](https://github.com/punkpeye/mcp-remote). It forwards requests to the real hosted MCP and returns its live tool definitions and results. It requires outbound HTTPS access to the endpoint above; it does not include a local database or the hosted backend.
+
+With Node.js 22 or newer:
+
+```sh
+git clone https://github.com/flo7up/aiusecasehub-mcp.git
+cd aiusecasehub-mcp
+npm ci --ignore-scripts
+node server.mjs
+```
+
+The process waits for MCP JSON-RPC on stdin. In a client configuration, use `node` as the command and the absolute path to `server.mjs` as its argument. Use `node server.mjs` directly rather than `npm start` in MCP clients, so npm's banner cannot enter the protocol stream.
+
+Alternatively, build and run the container:
+
+```sh
+docker build -t aiusecasehub-mcp:local .
+docker run --rm -i aiusecasehub-mcp:local
+```
+
+No key is required to start, initialize, list tools or use the limited preview. For full access, set `AIUSECASEHUB_API_KEY` in your client's secret environment; with Docker, add `-e AIUSECASEHUB_API_KEY` to forward an already-set environment variable. The adapter sends it as `X-API-Key`. An explicitly empty key fails locally; an invalid key remains an upstream authentication error. Omit the variable entirely for the preview.
+
+The Docker image runs as a non-root user and installs locked dependencies during build. It publishes no HTTP port. The transport bridge is pinned to `mcp-remote` 0.8.2; its `qs` dependency is overridden to patched version 6.16.0.
+
+To verify initialization, four live tool definitions and ping without using preview attempts:
+
+```sh
+node examples/verify-stdio.mjs
+node examples/verify-stdio.mjs --docker
+```
+
+Add `--exercise` to either command to perform one real search and detail lookup (two anonymous preview attempts). This verifier always omits personal keys. CI builds the container and checks both transports without consuming tool-call credits.
+
+### Glama build configuration
+
+Submit this public repository as **AIUseCaseHub MCP**. `glama.json` declares `flo7up` as the maintainer. The checked-in Dockerfile is runnable without credentials. If Glama asks for build configuration in its Dockerfile admin page, use Node.js 24, build command `npm ci --omit=dev --ignore-scripts`, and command arguments `["node", "server.mjs"]` from the repository root. Leave API-key configuration unset for evaluation. All four tools are discovered from the hosted service, not from a static server card.
 
 ## Free preview and full access
 
@@ -119,6 +158,8 @@ The official MCP Registry name is **`io.github.flo7up/aiusecasehub`**, version *
 `smithery-config.json` declares the optional personal API-key header for Smithery's configuration UI. Free previews use no key; full-access users supply their own. Publication and working connections are verified separately.
 
 ## Credits, data and support
+
+The adapter code and documentation in this repository are MIT licensed. The hosted service, its private implementation and the case dataset are not part of this repository or that license; service access remains subject to the linked terms and preview/credit limits.
 
 With a personal key, successful searches cost 2 credits and detail lookups cost 1. The public preview, discovery and listing do not deduct credits. The response's `_mcp` object describes preview limits or reports credits used and remaining. Account allowances and purchases are managed on the [API page](https://www.aiusecasehub.com/developer-api).
 

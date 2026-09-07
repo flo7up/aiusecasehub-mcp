@@ -1,0 +1,23 @@
+name: Verify MCP adapter
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm audit --omit=dev --audit-level=moderate
+      - run: node examples/verify-stdio.mjs
+      - run: docker build -t aiusecasehub-mcp:local .
+      - run: node examples/verify-stdio.mjs --docker
