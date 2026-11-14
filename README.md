@@ -73,7 +73,7 @@ No key is required to start, initialize, list tools or use the limited preview. 
 
 The Docker image runs as a non-root user and installs locked dependencies during build. It publishes no HTTP port. The transport bridge is pinned to `mcp-remote` 0.8.2; its `qs` dependency is overridden to patched version 6.16.0.
 
-To verify initialization, four live tool definitions and ping without using preview attempts:
+To verify initialization, the live tool definitions and ping without using preview attempts:
 
 ```sh
 node examples/verify-stdio.mjs
@@ -84,7 +84,7 @@ Add `--exercise` to either command to perform one real search and detail lookup 
 
 ### Glama build configuration
 
-Submit this public repository as **AIUseCaseHub MCP**. `glama.json` declares `flo7up` as the maintainer. The checked-in Dockerfile is runnable without credentials. If Glama asks for build configuration in its Dockerfile admin page, use Node.js 24, build command `npm ci --omit=dev --ignore-scripts`, and command arguments `["node", "server.mjs"]` from the repository root. Leave API-key configuration unset for evaluation. All four tools are discovered from the hosted service, not from a static server card.
+Submit this public repository as **AIUseCaseHub MCP**. `glama.json` declares `flo7up` as the maintainer. The checked-in Dockerfile is runnable without credentials. If Glama asks for build configuration in its Dockerfile admin page, use Node.js 24, build command `npm ci --omit=dev --ignore-scripts`, and command arguments `["node", "server.mjs"]` from the repository root. Leave API-key configuration unset for evaluation. All tools are discovered from the hosted service, not from a static server card.
 
 ## Free preview and full access
 
@@ -98,7 +98,7 @@ Submit this public repository as **AIUseCaseHub MCP**. `glama.json` declares `fl
 
 The anonymous service has a shared budget of 200 tool-call attempts per UTC hour. The limits are stored centrally and remain effective across workers and restarts. Shared gateways may share an IP allowance. Discovery and tool listing do not consume it. Rate-limit errors include retry guidance and a link to full access; a storage failure closes the preview temporarily instead of allowing unlimited calls.
 
-## Four tools
+## Tools
 
 | Tool | Use | Required argument | Credits with a personal key |
 | --- | --- | --- | ---: |
@@ -106,10 +106,12 @@ The anonymous service has a shared budget of 200 tool-call attempts per UTC hour
 | `hybrid_search_usecases` | Hybrid search with company, industry, geography, provider and technology filters | `query` | 2 |
 | `vector_search_usecases` | Semantic similarity search | `query` | 2 |
 | `get_usecase_details` | Retrieve a case returned by search | `row_key` | 1 |
+| `get_company_profile` | A company's AI profile as on its hub page: maturity stage of the public record, documented deployments, AI providers, self-reported uses, peers, AI hiring and the trend calls that touch it | `company` | 2 |
+| `get_ai_trends` | Weekly "who gains, who is under pressure" calls with evidence and dates, rising patterns and the news radar with a 1-5 strength | none | 1 |
 
 Search tools accept `limit` from 1 to 20, capped at 3 for public previews. Hybrid search also supports `industry`, `country`, `technologies_used`, `cloud_provider`, `customer_name`, `partner_name`, and boolean case-type filters such as `isAgentCase` and `isRag`. See the [complete tool reference](https://www.aiusecasehub.com/developer-docs).
 
-Search payloads include `items`, `total`, `searchMode`, `dataSnapshot`, and `_mcp` credit metadata. Pass an item's `RowKey` to `get_usecase_details`. Parse the MCP text content as JSON; use the source links and evidence fields when interpreting reported outcomes. A deployment example is not a guarantee of the same results elsewhere.
+Search payloads include `items`, `total`, `searchMode`, `dataSnapshot`, and `_mcp` credit metadata. Every record links to its original source (`Url`), its page on aiusecasehub.com (`HubUrl`) and, where the company has one, its hub company page (`CompanyPages`). `customer_name` covers the spelling variants and units a company page groups. Pass an item's `RowKey` to `get_usecase_details`. Parse the MCP text content as JSON; use the source links and evidence fields when interpreting reported outcomes. A deployment example is not a guarantee of the same results elsewhere.
 
 Example prompts:
 
@@ -122,7 +124,7 @@ Example prompts:
 The included Node.js 20+ script uses built-in APIs and needs no package installation. By default it uses the anonymous preview. For full access it reads a personal key from a local text file or the `AIUSECASEHUB_API_KEY` environment variable. It never prints the key.
 
 ```powershell
-# Free discovery and all four tool definitions.
+# Free discovery and all tool definitions.
 node examples/verify-connection.mjs
 
 # Free search and abbreviated detail lookup; uses 2 preview attempts.
@@ -135,7 +137,7 @@ node examples/verify-connection.mjs --key-file 'C:\private\aiusecasehub-key.txt'
 node examples/verify-connection.mjs --key-file 'C:\private\aiusecasehub-key.txt' --exercise
 ```
 
-The script verifies all four tool names and stops on HTTP, protocol or tool errors. Its output describes the checks actually completed; it does not imply that a different client or gateway was tested.
+The script verifies the four case tool names (and allows the company and trend tools) and stops on HTTP, protocol or tool errors. Its output describes the checks actually completed; it does not imply that a different client or gateway was tested.
 
 ## Registry metadata
 
