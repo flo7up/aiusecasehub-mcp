@@ -3,7 +3,9 @@ import { readFileSync } from 'node:fs';
 
 const endpoint = 'https://basic-backend713-dsd8hygyfkc8d8f5.swedencentral-01.azurewebsites.net/api/mcp';
 const protocolVersion = '2026-07-28';
+// The four case tools are the stable contract; company and trend tools may be listed next to them.
 const expectedTools = ['get_usecase_details', 'hybrid_search_usecases', 'search_usecases', 'vector_search_usecases'];
+const optionalTools = ['get_ai_trends', 'get_company_profile'];
 const args = process.argv.slice(2);
 const keyIndex = args.indexOf('--key-file');
 const exercise = args.includes('--exercise');
@@ -68,7 +70,8 @@ try {
   assert.ok(discovery.supportedVersions?.includes(protocolVersion), 'Server did not advertise the expected protocol');
   const list = await rpc('tools/list');
   const tools = list.tools.map(tool => tool.name).sort();
-  assert.deepEqual(tools, expectedTools, 'Tool catalog differs from the published four-tool contract');
+  assert.deepEqual(tools.filter(name => expectedTools.includes(name)), expectedTools, 'A published case tool is missing');
+  assert.ok(tools.every(name => expectedTools.includes(name) || optionalTools.includes(name)), `Unexpected tool in catalog: ${tools.join(', ')}`);
   const report = { endpoint, protocolVersion, discovery: 'passed', tools, exercised: false, creditsUsed: 0 };
   if (exercise) {
     const search = await callTool('search_usecases', { search_term: 'AI customer service', limit: apiKey ? 1 : 20 }, apiKey ? 2 : 0);

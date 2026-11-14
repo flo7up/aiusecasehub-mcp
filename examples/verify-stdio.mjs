@@ -77,9 +77,10 @@ try {
   assert.ok(init.capabilities.tools);
   child.stdin.write(JSON.stringify({ jsonrpc: '2.0', method: 'notifications/initialized' }) + '\n');
   const { tools } = await rpc('tools/list');
-  assert.deepEqual(tools.map(tool => tool.name).sort(), [
-    'get_usecase_details', 'hybrid_search_usecases', 'search_usecases', 'vector_search_usecases',
-  ]);
+  const names = tools.map(tool => tool.name).sort();
+  const caseTools = ['get_usecase_details', 'hybrid_search_usecases', 'search_usecases', 'vector_search_usecases'];
+  assert.deepEqual(names.filter(name => caseTools.includes(name)), caseTools);
+  assert.ok(names.every(name => caseTools.includes(name) || ['get_ai_trends', 'get_company_profile'].includes(name)), names.join(', '));
   for (const tool of tools) {
     assert.ok(tool.description && tool.inputSchema);
     assert.equal(tool.annotations.readOnlyHint, true);
