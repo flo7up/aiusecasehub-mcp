@@ -106,6 +106,7 @@ The anonymous service has a shared budget of 200 tool-call attempts per UTC hour
 | `hybrid_search_usecases` | Hybrid search with company, industry, geography, provider and technology filters | `query` | 2 |
 | `vector_search_usecases` | Semantic similarity search | `query` | 2 |
 | `get_usecase_details` | Retrieve a case returned by search | `row_key` | 1 |
+| `find_similar_usecases` | Describe a use case you have in mind and get the most similar deployments by embedding similarity (0-1 score), optionally within an industry, country or provider | `description` | 2 |
 | `get_company_profile` | A company's AI profile as on its hub page: maturity stage of the public record, documented deployments, AI providers, self-reported uses, peers, AI hiring and the trend calls that touch it | `company` | 2 |
 | `get_ai_trends` | Weekly "who gains, who is under pressure" calls with evidence and dates, rising patterns and the news radar with a 1-5 strength | none | 1 |
 
@@ -137,7 +138,7 @@ node examples/verify-connection.mjs --key-file 'C:\private\aiusecasehub-key.txt'
 node examples/verify-connection.mjs --key-file 'C:\private\aiusecasehub-key.txt' --exercise
 ```
 
-The script verifies the four case tool names (and allows the company and trend tools) and stops on HTTP, protocol or tool errors. Its output describes the checks actually completed; it does not imply that a different client or gateway was tested.
+The script verifies the four case tool names (and allows the similar-case, company and trend tools) and stops on HTTP, protocol or tool errors. Its output describes the checks actually completed; it does not imply that a different client or gateway was tested.
 
 ## Registry metadata
 
