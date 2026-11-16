@@ -107,12 +107,13 @@ The anonymous service has a shared budget of 200 tool-call attempts per UTC hour
 | `vector_search_usecases` | Semantic similarity search | `query` | 2 |
 | `get_usecase_details` | Retrieve a case returned by search | `row_key` | 1 |
 | `find_similar_usecases` | Describe a use case you have in mind and get the most similar deployments by embedding similarity (0-1 score), optionally within an industry, country or provider | `description` | 2 |
-| `get_company_profile` | A company's AI profile as on its hub page: maturity stage of the public record, documented deployments, AI providers, self-reported uses, peers, AI hiring and the trend calls that touch it | `company` | 2 |
+| `get_company_profile` | A company's AI profile as on its hub page: maturity stage of the public record, documented deployments, AI providers, self-reported uses, known AI failures, peers, AI hiring and the trend calls that touch it | `company` | 2 |
 | `get_ai_trends` | Weekly "who gains, who is under pressure" calls with evidence and dates, rising patterns and the news radar with a 1-5 strength | none | 1 |
+| `search_ai_failures` | Documented enterprise AI failures from the hub's register, by topic, company, pattern, industry or outcome, each with sources, outcome and lesson, plus failure patterns with steps to avoid them | none | 1 |
 
 Search tools accept `limit` from 1 to 20, capped at 3 for public previews. Hybrid search also supports `industry`, `country`, `technologies_used`, `cloud_provider`, `customer_name`, `partner_name`, and boolean case-type filters such as `isAgentCase` and `isRag`. See the [complete tool reference](https://www.aiusecasehub.com/developer-docs).
 
-Search payloads include `items`, `total`, `searchMode`, `dataSnapshot`, and `_mcp` credit metadata. Every record links to its original source (`Url`), its page on aiusecasehub.com (`HubUrl`) and, where the company has one, its hub company page (`CompanyPages`). `customer_name` covers the spelling variants and units a company page groups. Pass an item's `RowKey` to `get_usecase_details`. Parse the MCP text content as JSON; use the source links and evidence fields when interpreting reported outcomes. A deployment example is not a guarantee of the same results elsewhere.
+Search results also carry the record's stated stage (`StageReview`). Search payloads include `items`, `total`, `searchMode`, `dataSnapshot`, and `_mcp` credit metadata. Every record links to its original source (`Url`), its page on aiusecasehub.com (`HubUrl`) and, where the company has one, its hub company page (`CompanyPages`). `customer_name` covers the spelling variants and units a company page groups. Pass an item's `RowKey` to `get_usecase_details`. Parse the MCP text content as JSON; use the source links and evidence fields when interpreting reported outcomes. A deployment example is not a guarantee of the same results elsewhere.
 
 Example prompts:
 
@@ -138,7 +139,7 @@ node examples/verify-connection.mjs --key-file 'C:\private\aiusecasehub-key.txt'
 node examples/verify-connection.mjs --key-file 'C:\private\aiusecasehub-key.txt' --exercise
 ```
 
-The script verifies the four case tool names (and allows the similar-case, company and trend tools) and stops on HTTP, protocol or tool errors. Its output describes the checks actually completed; it does not imply that a different client or gateway was tested.
+The script verifies the four case tool names (and allows the similar-case, company, trend and AI-failure tools) and stops on HTTP, protocol or tool errors. Its output describes the checks actually completed; it does not imply that a different client or gateway was tested.
 
 ## Registry metadata
 

@@ -5,7 +5,7 @@ const endpoint = 'https://basic-backend713-dsd8hygyfkc8d8f5.swedencentral-01.azu
 const protocolVersion = '2026-07-28';
 // The four case tools are the stable contract; company and trend tools may be listed next to them.
 const expectedTools = ['get_usecase_details', 'hybrid_search_usecases', 'search_usecases', 'vector_search_usecases'];
-const optionalTools = ['find_similar_usecases', 'get_ai_trends', 'get_company_profile'];
+const optionalTools = ['find_similar_usecases', 'get_ai_trends', 'get_company_profile', 'search_ai_failures'];
 const args = process.argv.slice(2);
 const keyIndex = args.indexOf('--key-file');
 const exercise = args.includes('--exercise');

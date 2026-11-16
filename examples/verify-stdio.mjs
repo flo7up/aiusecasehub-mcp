@@ -80,7 +80,7 @@ try {
   const names = tools.map(tool => tool.name).sort();
   const caseTools = ['get_usecase_details', 'hybrid_search_usecases', 'search_usecases', 'vector_search_usecases'];
   assert.deepEqual(names.filter(name => caseTools.includes(name)), caseTools);
-  assert.ok(names.every(name => caseTools.includes(name) || ['find_similar_usecases', 'get_ai_trends', 'get_company_profile'].includes(name)), names.join(', '));
+  assert.ok(names.every(name => caseTools.includes(name) || ['find_similar_usecases', 'get_ai_trends', 'get_company_profile', 'search_ai_failures'].includes(name)), names.join(', '));
   for (const tool of tools) {
     assert.ok(tool.description && tool.inputSchema);
     assert.equal(tool.annotations.readOnlyHint, true);
