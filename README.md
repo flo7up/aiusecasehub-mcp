@@ -1,5 +1,7 @@
 # AIUseCaseHub MCP
 
+[![flo7up/aiusecasehub-mcp MCP server](https://glama.ai/mcp/servers/flo7up/aiusecasehub-mcp/badges/score.svg)](https://glama.ai/mcp/servers/flo7up/aiusecasehub-mcp)
+
 Search source-linked enterprise AI deployments from your agent. Find examples by company, industry, technology, cloud provider and reported outcomes, then retrieve the underlying case for evidence and context.
 
 [Website](https://www.aiusecasehub.com) · [MCP documentation](https://www.aiusecasehub.com/developer-mcp) · [Get an API key](https://www.aiusecasehub.com/developer-api) · [Official registry record](https://registry.modelcontextprotocol.io/v0.1/servers/io.github.flo7up%2Faiusecasehub/versions/latest)
